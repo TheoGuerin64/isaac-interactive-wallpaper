@@ -63,7 +63,7 @@ document.body.onmousemove = event => {
 class Character {
 	constructor () {
 		this.sprite_sheet = new Image()
-		this.sprite_sheet.src = "assets/isaac.png"
+		this.sprite_sheet.src = "assets/characters/isaac.png"
 
 		this.x = Math.floor(document.body.clientWidth / 2)
 		this.y = Math.floor(document.body.clientHeight / 2)
