@@ -242,14 +242,7 @@ window.wallpaperPropertyListener = {
 			}
 		}
 		if (properties.character) {
-			switch (properties.character.value) {
-				case "isaac":
-					renderer.character.sprite_sheet.src = "assets/isaac.png"
-					break;
-				case "cain":
-					renderer.character.sprite_sheet.src = "assets/cain.png"
-					break;
-			}
+			renderer.character.sprite_sheet.src = "assets/characters/" + properties.character.value + ".png"
 		}
 	},
 };
