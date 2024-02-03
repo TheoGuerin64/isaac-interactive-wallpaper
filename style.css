@@ -1,0 +1,14 @@
+html, body {
+   height: 100%;
+}
+
+body {
+   background-image: url("assets/background.png");
+   background-position: center;
+   overflow: hidden;
+   margin: 0;
+}
+
+canvas {
+   image-rendering: pixelated;
+}
