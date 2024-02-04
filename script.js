@@ -1,3 +1,4 @@
+(function() {
 const HEAD_SPRITE_WIDTH = 84
 const HEAD_SPRITE_HEIGHT = 78
 const BODY_SPRITE_WIDTH = 54
@@ -267,3 +268,4 @@ window.wallpaperPropertyListener = {
 		}
 	},
 };
+})()
