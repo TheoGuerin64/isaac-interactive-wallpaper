@@ -30,7 +30,7 @@ const Direction = {
 
 
 class Tear {
-	static sprite = (() => {
+	static sprite = (function () {
 		const sprite = new Image()
 		sprite.src = "assets/tear.png"
 		return sprite
