@@ -222,7 +222,9 @@ class Renderer {
 
 
 let renderer = new Renderer()
-renderer.start()
+window.onload = () => {
+	renderer.start()
+}
 
 
 window.wallpaperPropertyListener = {
