@@ -235,29 +235,29 @@
 			}
 			if (properties.background) {
 				if (properties.background.value) {
-					document.body.style.backgroundImage = "url('file:///" + properties.background.value + "')";
+					document.body.style.backgroundImage = "url('file:///" + properties.background.value + "')"
 				} else {
-					document.body.style.backgroundImage = "url('assets/background.png')";
+					document.body.style.backgroundImage = "url('assets/background.png')"
 				}
 			}
 			if (properties.background_style) {
 				switch (properties.background_style.value) {
 					case "fit":
-						document.body.style.backgroundSize = "cover";
-						break;
+						document.body.style.backgroundSize = "cover"
+						break
 					case "fill":
-						document.body.style.backgroundSize = "100% 100%";
-						break;
+						document.body.style.backgroundSize = "100% 100%"
+						break
 					case "center":
-						document.body.style.backgroundSize = "auto";
-						break;
+						document.body.style.backgroundSize = "auto"
+						break
 				}
 			}
 			if (properties.background_repeat) {
 				if (properties.background_repeat.value) {
-					document.body.style.backgroundRepeat = "repeat";
+					document.body.style.backgroundRepeat = "repeat"
 				} else {
-					document.body.style.backgroundRepeat = "no-repeat";
+					document.body.style.backgroundRepeat = "no-repeat"
 				}
 			}
 			if (properties.character) {
@@ -267,11 +267,11 @@
 				Renderer.limit_fps = properties.fps_limiter.value
 			}
 		},
-	};
+	}
 
 
-	const renderer = new Renderer()
 	window.onload = () => {
+		const renderer = new Renderer()
 		renderer.start()
 	}
 })()
