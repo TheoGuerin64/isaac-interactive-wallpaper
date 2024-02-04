@@ -3,10 +3,9 @@ const BODY_SPRITE_SIZE = [54, 45]
 const CURSOR_OFF_RADIUS = 40
 const DIRECTION_HORIZONTAL_ANGLE = 0.6
 const SHOOT_ANIMATION_DURATION = 250
-const DRAW_DELAY = 15
 const ANIMATION_DELAY = 150
-const CHARACTER_SPEED = 5
-const TEAR_SPEED = 8
+const CHARACTER_SPEED = 320
+const TEAR_SPEED = 600
 
 
 function point_distance(x1, y1, x2, y2) {
@@ -43,9 +42,9 @@ class Tear {
 		|| this.y + this.sprite.height < 0 || this.y - this.sprite.height > window.innerHeight
 	}
 
-	update() {
-		this.x += this.forward[0]
-		this.y += this.forward[1]
+	update(delta_time) {
+		this.x += this.forward[0] * delta_time
+		this.y += this.forward[1] * delta_time
 	}
 
 	draw(ctx) {
@@ -99,31 +98,31 @@ class Character {
 		}
 	}
 
-	update_position() {
+	update_position(delta_time) {
 		let angle = line_angle(this.x, this.y, this.destination[0], this.destination[1])
 		let distance = point_distance(this.x, this.y, this.destination[0], this.destination[1])
-		if (distance > CHARACTER_SPEED * 2) {
-			this.x += Math.round(Math.cos(angle) * CHARACTER_SPEED)
-			this.y += Math.round(Math.sin(angle) * CHARACTER_SPEED)
+		if (distance > 8) {
+			this.x += Math.round(Math.cos(angle) * CHARACTER_SPEED * delta_time)
+			this.y += Math.round(Math.sin(angle) * CHARACTER_SPEED * delta_time)
 		} else {
 			this.animation_step = 0
 		}
 	}
 
-	update_tears() {
+	update_tears(delta_time) {
 		for (let tear of this.tears) {
-			tear.update()
+			tear.update(delta_time)
 			if (tear.is_out_of_bounds()) {
 				this.tears.splice(this.tears.indexOf(tear), 1)
 			}
 		}
 	}
 
-	update() {
+	update(delta_time) {
 		this.update_direction()
 		this.update_destination()
-		this.update_position()
-		this.update_tears()
+		this.update_position(delta_time)
+		this.update_tears(delta_time)
 	}
 
 	draw_tears(ctx) {
@@ -177,16 +176,36 @@ class Renderer {
 		this.character = new Character()
 
 		this.canvas = document.getElementById("canvas")
-		this.canvas.onmouseup = this.onmouseup.bind(this)
+		this.canvas.onmouseup = this.character.onmouseup.bind(this.character)
 		canvas.width = window.innerWidth
 		canvas.height = window.innerHeight
 
 		this.ctx = canvas.getContext("2d")
+
+		this.limit_fps = false
+		this.max_fps = 30
+		this.last_time = 0
 	}
 
 	start() {
-		setInterval(this.render.bind(this), DRAW_DELAY)
+		requestAnimationFrame(this.render.bind(this))
 		setInterval(this.update_animation_step.bind(this), ANIMATION_DELAY)
+	}
+
+	render(current_time) {
+		requestAnimationFrame(this.render.bind(this))
+
+		let now = current_time / 1000
+		let delta_time = Math.min(now - this.last_time, 1)
+		if (this.limit_fps && delta_time < 1 / this.max_fps) {
+			return
+		}
+
+		this.character.update(delta_time)
+		this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
+		this.character.draw(this.ctx)
+
+		this.last_time = now
 	}
 
 	update_animation_step() {
@@ -194,16 +213,6 @@ class Renderer {
 		if (this.character.animation_step == 9) {
 			this.character.animation_step = 0
 		}
-	}
-
-	render() {
-		this.character.update()
-		this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
-		this.character.draw(this.ctx)
-	}
-
-	onmouseup(event) {
-		this.character.onmouseup(event)
 	}
 }
 
@@ -214,6 +223,9 @@ renderer.start()
 
 window.wallpaperPropertyListener = {
 	applyUserProperties: function(properties) {
+        if (properties.fps) {
+            renderer.max_fps = properties.fps.value
+        }
 		if (properties.background) {
 			if (properties.background.value) {
 				document.body.style.backgroundImage = "url('file:///" + properties.background.value + "')";
@@ -243,6 +255,9 @@ window.wallpaperPropertyListener = {
 		}
 		if (properties.character) {
 			renderer.character.sprite_sheet.src = "assets/characters/" + properties.character.value + ".png"
+		}
+		if (properties.fps_limiter) {
+			renderer.limit_fps = properties.fps_limiter.value
 		}
 	},
 };
