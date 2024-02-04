@@ -110,11 +110,9 @@ class Character {
 	}
 
 	update_tears(delta_time) {
+		this.tears = this.tears.filter(tear => !tear.is_out_of_bounds())
 		for (let tear of this.tears) {
 			tear.update(delta_time)
-			if (tear.is_out_of_bounds()) {
-				this.tears.splice(this.tears.indexOf(tear), 1)
-			}
 		}
 	}
 
