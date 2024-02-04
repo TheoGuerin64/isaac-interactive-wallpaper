@@ -31,7 +31,7 @@ const Direction = {
 
 class Tear {
 	static sprite = (() => {
-		let sprite = new Image()
+		const sprite = new Image()
 		sprite.src = "assets/tear.png"
 		return sprite
 	})()
@@ -80,7 +80,7 @@ class Character {
 
 
 	update_direction() {
-		let angle = line_angle(this.x, this.y, cursor[0], cursor[1])
+		const angle = line_angle(this.x, this.y, cursor[0], cursor[1])
 		if (Math.abs(Math.cos(angle)) > DIRECTION_HORIZONTAL_ANGLE) {
 			if (Math.cos(angle) > 0) {
 				this.direction = Direction.RIGHT
@@ -97,15 +97,15 @@ class Character {
 	}
 
 	update_destination() {
-		let distance = point_distance(this.x, this.y, cursor[0], cursor[1])
+		const distance = point_distance(this.x, this.y, cursor[0], cursor[1])
 		if (distance > CURSOR_OFF_RADIUS) {
 			this.destination = [cursor[0], cursor[1]]
 		}
 	}
 
 	update_position(delta_time) {
-		let angle = line_angle(this.x, this.y, this.destination[0], this.destination[1])
-		let distance = point_distance(this.x, this.y, this.destination[0], this.destination[1])
+		const angle = line_angle(this.x, this.y, this.destination[0], this.destination[1])
+		const distance = point_distance(this.x, this.y, this.destination[0], this.destination[1])
 		if (distance > 8) {
 			this.x += Math.round(Math.cos(angle) * CHARACTER_SPEED * delta_time)
 			this.y += Math.round(Math.sin(angle) * CHARACTER_SPEED * delta_time)
@@ -116,7 +116,7 @@ class Character {
 
 	update_tears(delta_time) {
 		this.tears = this.tears.filter(tear => !tear.is_out_of_bounds())
-		for (let tear of this.tears) {
+		for (const tear of this.tears) {
 			tear.update(delta_time)
 		}
 	}
@@ -129,7 +129,7 @@ class Character {
 	}
 
 	draw_tears(ctx) {
-		for (let tear of this.tears) {
+		for (const tear of this.tears) {
 			tear.draw(ctx)
 		}
 	}
@@ -166,8 +166,8 @@ class Character {
 	}
 
 	onmouseup(_) {
-		let angle = line_angle(this.x, this.y + 10, cursor[0], cursor[1])
-		let direction = [Math.cos(angle) * TEAR_SPEED, Math.sin(angle) * TEAR_SPEED]
+		const angle = line_angle(this.x, this.y + 10, cursor[0], cursor[1])
+		const direction = [Math.cos(angle) * TEAR_SPEED, Math.sin(angle) * TEAR_SPEED]
 		this.tears.push(new Tear(this.x, this.y, direction))
 		this.shooting = true
 		setTimeout(() => this.shooting = false, SHOOT_ANIMATION_DURATION)
@@ -199,8 +199,8 @@ class Renderer {
 	render(current_time) {
 		requestAnimationFrame(this.render.bind(this))
 
-		let now = current_time / 1000
-		let delta_time = Math.min(now - this.last_time, 1)
+		const now = current_time / 1000
+		const delta_time = Math.min(now - this.last_time, 1)
 		if (this.limit_fps && delta_time < 1 / this.max_fps) {
 			return
 		}
@@ -221,7 +221,7 @@ class Renderer {
 }
 
 
-let renderer = new Renderer()
+const renderer = new Renderer()
 window.onload = () => {
 	renderer.start()
 }
