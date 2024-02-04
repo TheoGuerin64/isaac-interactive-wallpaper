@@ -37,9 +37,6 @@ class Tear {
 	})()
 
 	constructor (x, y, forward) {
-		Tear.sprite.width = Tear.sprite.width
-		Tear.sprite.height = Tear.sprite.height
-
 		this.x = x - Tear.sprite.width / 2
 		this.y = y
 		this.forward = forward
