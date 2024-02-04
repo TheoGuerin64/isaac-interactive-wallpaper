@@ -1,5 +1,7 @@
-const HEAD_SPRITE_SIZE = [84, 78]
-const BODY_SPRITE_SIZE = [54, 45]
+const HEAD_SPRITE_WIDTH = 84
+const HEAD_SPRITE_HEIGHT = 78
+const BODY_SPRITE_WIDTH = 54
+const BODY_SPRITE_HEIGHT = 45
 const CURSOR_OFF_RADIUS = 40
 const DIRECTION_HORIZONTAL_ANGLE = 0.6
 const SHOOT_ANIMATION_DURATION = 250
@@ -28,18 +30,24 @@ const Direction = {
 
 
 class Tear {
-	constructor (x, y, forward) {
-		this.sprite = new Image()
-		this.sprite.src = "assets/tear.png"
+	static sprite = (() => {
+		let sprite = new Image()
+		sprite.src = "assets/tear.png"
+		return sprite
+	})()
 
-		this.x = x - this.sprite.width / 2
+	constructor (x, y, forward) {
+		Tear.sprite.width = Tear.sprite.width
+		Tear.sprite.height = Tear.sprite.height
+
+		this.x = x - Tear.sprite.width / 2
 		this.y = y
 		this.forward = forward
 	}
 
 	is_out_of_bounds() {
-		return this.x + this.sprite.width < 0 || this.x - this.sprite.width > window.innerWidth
-		|| this.y + this.sprite.height < 0 || this.y - this.sprite.height > window.innerHeight
+		return this.x + Tear.sprite.width < 0 || this.x - Tear.sprite.width > window.innerWidth
+		|| this.y + Tear.sprite.height < 0 || this.y - Tear.sprite.height > window.innerHeight
 	}
 
 	update(delta_time) {
@@ -48,7 +56,7 @@ class Tear {
 	}
 
 	draw(ctx) {
-		ctx.drawImage(this.sprite, this.x, this.y)
+		ctx.drawImage(Tear.sprite, this.x, this.y)
 	}
 }
 
@@ -131,30 +139,31 @@ class Character {
 
 	draw_head(ctx) {
 		ctx.drawImage(this.sprite_sheet,
-			HEAD_SPRITE_SIZE[0] * (this.direction[0] + this.shooting), 0,
-			...HEAD_SPRITE_SIZE,
+			HEAD_SPRITE_WIDTH * (this.direction[0] + this.shooting), 0,
+			HEAD_SPRITE_WIDTH, HEAD_SPRITE_HEIGHT,
 			this.x - 42, this.y - 30,
-			...HEAD_SPRITE_SIZE,
+			HEAD_SPRITE_WIDTH, HEAD_SPRITE_HEIGHT
 		)
 	}
 
 	draw_body(ctx) {
 		ctx.drawImage(this.sprite_sheet,
-			BODY_SPRITE_SIZE[0] * this.animation_step, HEAD_SPRITE_SIZE[1] + BODY_SPRITE_SIZE[1] * this.direction[1],
-			...BODY_SPRITE_SIZE,
+			BODY_SPRITE_WIDTH * this.animation_step, HEAD_SPRITE_HEIGHT + BODY_SPRITE_HEIGHT * this.direction[1],
+			BODY_SPRITE_WIDTH, BODY_SPRITE_HEIGHT,
 			this.x - 27, this.y + 30,
-			...BODY_SPRITE_SIZE
+			BODY_SPRITE_WIDTH, BODY_SPRITE_HEIGHT
 		)
 	}
 
 	draw(ctx)
 	{
-		if (this.direction == Direction.UP) {
+		const is_up = this.direction == Direction.UP
+		if (is_up) {
 			this.draw_tears(ctx)
 		}
 		this.draw_body(ctx)
 		this.draw_head(ctx)
-		if (this.direction != Direction.UP) {
+		if (!is_up) {
 			this.draw_tears(ctx)
 		}
 	}
