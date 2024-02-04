@@ -230,9 +230,9 @@ window.onload = () => {
 
 window.wallpaperPropertyListener = {
 	applyUserProperties: function(properties) {
-        if (properties.fps) {
-            renderer.max_fps = properties.fps.value
-        }
+		if (properties.fps) {
+			renderer.max_fps = properties.fps.value
+		}
 		if (properties.background) {
 			if (properties.background.value) {
 				document.body.style.backgroundImage = "url('file:///" + properties.background.value + "')";
