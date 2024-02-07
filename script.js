@@ -9,8 +9,6 @@
 	const DIRECTION_HORIZONTAL_ANGLE = 0.6
 	const SHOOT_ANIMATION_DURATION = 250
 	const ANIMATION_DELAY = 0.15
-	const CHARACTER_SPEED = 320
-	const TEAR_SPEED = 600
 
 
 	function point_distance(x1, y1, x2, y2) {
@@ -47,6 +45,7 @@
 
 	class Tear {
 		static sprite = load_image("assets/tear.png")
+		static speed = 600
 
 		constructor (x, y, forward) {
 			this.x = x - Tear.sprite.width / 2
@@ -68,6 +67,7 @@
 
 	class Character {
 		static sprite_sheet = load_image("assets/characters/isaac.png")
+		static speed = 320
 
 		constructor () {
 			this.x = Math.floor(document.body.clientWidth / 2)
@@ -121,8 +121,8 @@
 			const angle = line_angle(this.x, this.y, this.destination[0], this.destination[1])
 			const distance = point_distance(this.x, this.y, this.destination[0], this.destination[1])
 			if (distance > 8) {
-				this.x += Math.round(Math.cos(angle) * CHARACTER_SPEED * delta_time)
-				this.y += Math.round(Math.sin(angle) * CHARACTER_SPEED * delta_time)
+				this.x += Math.round(Math.cos(angle) * Character.speed * delta_time)
+				this.y += Math.round(Math.sin(angle) * Character.speed * delta_time)
 			} else {
 				this.animation_step = 0
 			}
@@ -182,7 +182,7 @@
 
 		onmouseup(_) {
 			const angle = line_angle(this.x, this.y + 10, cursor[0], cursor[1])
-			const direction = [Math.cos(angle) * TEAR_SPEED, Math.sin(angle) * TEAR_SPEED]
+			const direction = [Math.cos(angle) * Tear.speed, Math.sin(angle) * Tear.speed]
 			this.tears.push(new Tear(this.x, this.y, direction))
 			this.shooting = true
 			setTimeout(() => this.shooting = false, SHOOT_ANIMATION_DURATION)
@@ -239,6 +239,12 @@
 				} else {
 					document.body.style.backgroundImage = "url('assets/background.png')"
 				}
+			}
+			if (properties.character_speed) {
+				Character.speed = properties.character_speed.value
+			}
+			if (properties.tear_speed) {
+				Tear.speed = properties.tear_speed.value
 			}
 			if (properties.background_style) {
 				switch (properties.background_style.value) {
