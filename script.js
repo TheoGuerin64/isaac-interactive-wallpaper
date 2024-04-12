@@ -249,12 +249,23 @@
 			if (properties.background_style) {
 				switch (properties.background_style.value) {
 					case "fit":
+						document.body.style.backgroundPosition = "center"
 						document.body.style.backgroundSize = "cover"
 						break
 					case "fill":
+						document.body.style.backgroundPosition = "center"
 						document.body.style.backgroundSize = "100% 100%"
 						break
 					case "center":
+						document.body.style.backgroundPosition = "center"
+						document.body.style.backgroundSize = "auto"
+						break
+					case "left":
+						document.body.style.backgroundPosition = "left"
+						document.body.style.backgroundSize = "auto"
+						break
+					case "right":
+						document.body.style.backgroundPosition = "right"
 						document.body.style.backgroundSize = "auto"
 						break
 				}

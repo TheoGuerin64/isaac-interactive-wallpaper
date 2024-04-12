@@ -1,6 +1,6 @@
 {
 	"contentrating" : "Everyone",
-	"description" : "Isaac follow your mouse and shoot tears if you click.\r\nYou can change the background and the character in the properties.\r\n\r\nGithub: https://github.com/TheoGuerin64/isaac-interactive-wallpaper\r\nTo report a bug: https://github.com/TheoGuerin64/isaac-interactive-wallpaper/issues",
+	"description" : "Isaac follow your mouse and shoot tears if you click.\r\nYou can change settings (background, character, ...) in the properties.\r\n\r\nGithub: https://github.com/TheoGuerin64/isaac-interactive-wallpaper\r\nTo report a bug: https://github.com/TheoGuerin64/isaac-interactive-wallpaper/issues",
 	"file" : "index.html",
 	"general" : 
 	{
@@ -39,6 +39,14 @@
 					{
 						"label" : "center",
 						"value" : "center"
+					},
+					{
+						"label" : "left",
+						"value" : "left"
+					},
+					{
+						"label" : "right",
+						"value" : "right"
 					}
 				],
 				"order" : 104,
